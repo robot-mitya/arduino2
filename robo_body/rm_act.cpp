@@ -54,7 +54,7 @@ void Action::execute(String command, int value)
 
   if (command == "I")
   {
-    Equipment::setHeadlightState(value);
+    Equipment::executeInstruction(value);
     processedCommand = true;
   }
 

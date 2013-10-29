@@ -28,7 +28,13 @@ void Equipment::initialize()
 {
   // Initializing headlights:
   pinMode(Cfg::LIGHT_PIN, OUTPUT);
-  setHeadlightState(0);
+  executeInstruction(Cfg::INSTRUCTION_HEADLIGHTS_OFF);
+
+  // Initializing accumulators' charging:
+  pinMode(Cfg::MAIN_ACCUMULATOR_CHARGER_PIN, OUTPUT);
+  executeInstruction(Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_OFF);
+  pinMode(Cfg::PHONE_ACCUMULATOR_CHARGER_PIN, OUTPUT);
+  executeInstruction(Cfg::INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_OFF);
 
   // Initializing and setting horizontal servo into install-phone position:
   pinMode(Cfg::SERVO_HEAD_HORIZONTAL_PIN, OUTPUT);
@@ -107,15 +113,27 @@ void Equipment::refresh()
   #endif
 }
 
-void Equipment::setHeadlightState(int value)
+void Equipment::executeInstruction(int value)
 {
-  if (value == 0)
-  {
-    digitalWrite(Cfg::LIGHT_PIN, LOW);
-  }
-  else if (value == 1)
-  {
-    digitalWrite(Cfg::LIGHT_PIN, HIGH);
+  switch (value) {
+    case Cfg::INSTRUCTION_HEADLIGHTS_OFF:
+      digitalWrite(Cfg::LIGHT_PIN, LOW);
+      break;
+    case Cfg::INSTRUCTION_HEADLIGHTS_ON:
+      digitalWrite(Cfg::LIGHT_PIN, HIGH);
+      break;
+    case Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_OFF:
+      digitalWrite(Cfg::MAIN_ACCUMULATOR_CHARGER_PIN, LOW);
+      break;
+    case Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_ON:
+      digitalWrite(Cfg::MAIN_ACCUMULATOR_CHARGER_PIN, HIGH);
+      break;
+    case Cfg::INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_OFF:
+      digitalWrite(Cfg::PHONE_ACCUMULATOR_CHARGER_PIN, LOW);
+      break;
+    case Cfg::INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_ON:
+      digitalWrite(Cfg::PHONE_ACCUMULATOR_CHARGER_PIN, HIGH);
+      break;
   }
 }
 

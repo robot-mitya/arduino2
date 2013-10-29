@@ -22,19 +22,31 @@ namespace robot_mitya
       // This is a debug option.
       static const boolean ECHO_MODE = false;
       
+      // Serial communication pins.
+      static const int SERIAL_RX_PIN = 0;
+      static const int SERIAL_TX_PIN = 1;
+      
+      // Accumulator pins.
+      static const int MAIN_ACCUMULATOR_CHARGER_PIN = 2;
+      static const int PHONE_ACCUMULATOR_CHARGER_PIN = 8;
+      
       // Pins to control DC drive motors.
-      static const int MOTOR_LEFT_SPEED_PIN = 5;
+      static const int MOTOR_LEFT_SPEED_PIN = 5; // PWM pin
       static const int MOTOR_LEFT_DIRECTION_PIN = 4;
-      static const int MOTOR_RIGHT_SPEED_PIN = 6;
+      static const int MOTOR_RIGHT_SPEED_PIN = 6; // PWM pin
       static const int MOTOR_RIGHT_DIRECTION_PIN = 7;
       
       // Pins to control servos.
-      static const int SERVO_HEAD_HORIZONTAL_PIN = 9;
-      static const int SERVO_HEAD_VERTICAL_PIN = 10;
-      static const int SERVO_TAIL_PIN = 11;
+      static const int SERVO_HEAD_HORIZONTAL_PIN = 9; // PWM pin
+      static const int SERVO_HEAD_VERTICAL_PIN = 10; // PWM pin
+      static const int SERVO_TAIL_PIN = 11; // PWM pin
       
       // Headlights pin.
       static const int LIGHT_PIN = 13;
+      
+      // Unused digital pins.
+      static const int FREE_3_PIN = 3; // PWM pin
+      static const int FREE_12_PIN = 12;
       
       // Romeo buttons
       static const boolean USE_BUTTONS = true;
@@ -69,6 +81,13 @@ namespace robot_mitya
       static const float VOLTAGE_CHARGER_R1 = 7.5;
       static const float VOLTAGE_CHARGER_R2 = 4.7;
       
+      // Instruction values.
+      static const int INSTRUCTION_HEADLIGHTS_OFF = 0x0000;
+      static const int INSTRUCTION_HEADLIGHTS_ON = 0x0001;
+      static const int INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_OFF = 0x0030;
+      static const int INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_ON = 0x0031;
+      static const int INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_OFF = 0x0040;
+      static const int INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_ON = 0x0041;
   };
 }
 

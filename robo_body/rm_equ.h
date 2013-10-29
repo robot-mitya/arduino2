@@ -20,7 +20,7 @@ namespace robot_mitya
       static void initialize();
       static void refresh();      
       
-      static void setHeadlightState(int value);
+      static void executeInstruction(int value);
       
       static void moveHead(String plane, int degree);
       static void rotateHead(String plane, signed int period);
