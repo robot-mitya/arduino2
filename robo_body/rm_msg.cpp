@@ -5,9 +5,12 @@
 using namespace robot_mitya;
 
 #ifdef USBCON
-  #define ROBO_SERIAL Serial//1
+  // Bluetooth adapter is connected to Arduino Leonardo through Serial1.
+  #define ROBO_SERIAL Serial1
+  // Computer is connected to Arduino Leonardo through Serial.
   #define DEBUG_SERIAL Serial
 #else
+  // Arduino UNO has only one serial port, so debug output is not available.
   #define ROBO_SERIAL Serial
 #endif
 
