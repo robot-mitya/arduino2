@@ -23,6 +23,7 @@ namespace robot_mitya {
       static boolean isSwingHeadCommand(String command);
       static boolean isMoveTailCommand(String command);
       static boolean isSwingTailCommand(String command);
+      static boolean isStartReflexCommand(String command);
       static void voltageTimerHandler(int voltageDivider, unsigned int voltage);
   };
 }

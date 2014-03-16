@@ -6,6 +6,7 @@
 #include "rm_btn.h"
 #include "rm_msg.h"
 #include "rm_sts.h"
+#include "rm_rfx.h"
 
 #ifdef USBCON    // For Leonardo (Romeo V2) board we use SoftwareServo library, because of lack of Timers.
   #include <SoftwareServo.h>
@@ -73,6 +74,9 @@ void Equipment::initialize()
     RomeoButtons::initialize(Cfg::BUTTONS_PIN);
     RomeoButtons::setHandler(Equipment::buttonsHandler);
   }
+
+  // Initializing reflexes:
+  Reflex::initialize();
   
   // Initializing robot's state:
   State::initialize();
@@ -82,6 +86,8 @@ void Equipment::refresh()
 {
   voltageDividerBattery->refresh();
   voltageDividerCharger->refresh();
+  
+  Reflex::refresh();
   
   // Swinging head in horizontal plane.
   if (servoHeadHorizontal->update())

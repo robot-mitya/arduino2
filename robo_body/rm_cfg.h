@@ -51,9 +51,9 @@ namespace robot_mitya
       // Romeo buttons
       static const boolean USE_BUTTONS = true;
       // Romeo V2.0 buttons.
-      static const int BUTTONS_PIN = A0;
+//      static const int BUTTONS_PIN = A0;
       // Romeo V1.1 buttons.
-//      static const int BUTTONS_PIN = A7;
+      static const int BUTTONS_PIN = A7;
       
       // Boundary values for servos.
       static const int SERVO_HEAD_HORIZONTAL_MIN_DEGREE = 0;

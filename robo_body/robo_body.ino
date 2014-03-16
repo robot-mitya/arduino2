@@ -19,6 +19,7 @@
 #endif
 #include <SmartServo.h>
 #include <HardwareSerial.h>
+#include <RoboScript.h>
 
 using namespace robot_mitya;
 

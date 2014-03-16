@@ -2,6 +2,7 @@
 #include "rm_cfg.h"
 #include "rm_equ.h"
 #include "rm_msg.h"
+#include "rm_rfx.h"
 
 using namespace robot_mitya;
 
@@ -50,6 +51,11 @@ void Action::execute(String command, int value)
   {
     Equipment::swingTail(value);
     processedCommand = true;
+  }
+  
+  if (isStartReflexCommand(command))
+  {
+    processedCommand = Reflex::start((ReflexKind)value);
   }
 
   if (command == "I")
@@ -109,6 +115,11 @@ boolean Action::isMoveTailCommand(String command)
 boolean Action::isSwingTailCommand(String command)
 {
   return (command == "t");
+}
+
+boolean Action::isStartReflexCommand(String command)
+{
+  return (command == "M");
 }
 
 void Action::voltageTimerHandler(int voltageDivider, unsigned int voltage)
