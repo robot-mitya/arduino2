@@ -120,6 +120,57 @@ boolean Reflex::start(ReflexKind reflexKind)
     Equipment::swingHeadEx(VERTICAL, 1, MUSIC_PERIOD, musicTacts, 30, 1, true);
     Equipment::swingHeadEx(HORIZONTAL, 2, MUSIC_PERIOD * musicTacts / 1.5, 1.5, 50, 1, true);
     Equipment::swingTailEx(2, MUSIC_PERIOD, musicTacts, 70, 1, true);
+
+    const int kickSpeed = 192;
+    const int kickDuration = 90;
+    const int freezeDuration = MUSIC_PERIOD - kickDuration;
+    
+    RoboAction actionLeftKick;
+    RoboAction actionRightKick;
+    RoboAction actionLeftBackKick;
+    RoboAction actionRightBackKick;
+    RoboAction actionLeftStop;
+    RoboAction actionRightStop;
+    
+    fillAction2(actionLeftKick, 'L', kickSpeed, kickDuration);
+    fillAction2(actionRightKick, 'R', kickSpeed, kickDuration);
+    fillAction2(actionLeftBackKick, 'L', -kickSpeed, kickDuration);
+    fillAction2(actionRightBackKick, 'R', -kickSpeed, kickDuration);
+    fillAction2(actionLeftStop, 'L', 0, freezeDuration);
+    fillAction2(actionRightStop, 'R', 0, freezeDuration);
+
+    reflex = new RoboScript();
+    reflex->initialize(24);
+
+    reflex->addAction(actionLeftKick);
+    reflex->addAction(actionLeftStop);
+    reflex->addAction(actionRightKick);
+    reflex->addAction(actionRightStop);
+    reflex->addAction(actionLeftKick);
+    reflex->addAction(actionLeftStop);
+    
+    reflex->addAction(actionLeftBackKick);
+    reflex->addAction(actionLeftStop);
+    reflex->addAction(actionRightBackKick);
+    reflex->addAction(actionRightStop);
+    reflex->addAction(actionLeftBackKick);
+    reflex->addAction(actionLeftStop);
+  
+    reflex->addAction(actionRightKick);
+    reflex->addAction(actionRightStop);
+    reflex->addAction(actionLeftKick);
+    reflex->addAction(actionLeftStop);
+    reflex->addAction(actionRightKick);
+    reflex->addAction(actionRightStop);
+    
+    reflex->addAction(actionRightBackKick);
+    reflex->addAction(actionRightStop);
+    reflex->addAction(actionLeftBackKick);
+    reflex->addAction(actionLeftStop);
+    reflex->addAction(actionRightBackKick);
+    reflex->addAction(actionRightStop);
+    
+    reflex->startExecution();
     return true;
   }
   else if (reflexKind == NOSE)
@@ -135,5 +186,12 @@ void Reflex::fillAction(RoboAction* roboAction, uint32_t command, uint32_t value
   roboAction->Command = command;
   roboAction->Value = value;
   roboAction->Delay = delay;
+}
+
+void Reflex::fillAction2(RoboAction &roboAction, uint32_t command, uint32_t value, uint16_t delay)
+{
+  roboAction.Command = command;
+  roboAction.Value = value;
+  roboAction.Delay = delay;
 }
 
