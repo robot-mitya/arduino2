@@ -42,9 +42,9 @@ boolean Reflex::start(ReflexKind reflexKind)
   {
     reflex = new RoboScript();
     reflex->initialize(1);
-    RoboAction* act = new RoboAction();
+    RoboAction act;
     fillAction(act, 't', 1, 0);
-    reflex->addAction(*act);
+    reflex->addAction(act);
     reflex->startExecution();
     return true;
   }
@@ -63,24 +63,20 @@ boolean Reflex::start(ReflexKind reflexKind)
     
     reflex = new RoboScript();
     reflex->initialize(8);
-    RoboAction* act;
+    RoboAction act;
     for (int i = 0; i < 2; i++)
     {
-      act = new RoboAction();
       fillAction(act, 'L', kickSpeed, kickDuration);
-      reflex->addAction(*act);
+      reflex->addAction(act);
   
-      act = new RoboAction();
       fillAction(act, 'L', 0, freezeDuration);
-      reflex->addAction(*act);
+      reflex->addAction(act);
   
-      act = new RoboAction();
       fillAction(act, 'R', kickSpeed, kickDuration);
-      reflex->addAction(*act);
+      reflex->addAction(act);
   
-      act = new RoboAction();
       fillAction(act, 'R', 0, freezeDuration);
-      reflex->addAction(*act);
+      reflex->addAction(act);
     }
     reflex->startExecution();
     return true;
@@ -97,19 +93,16 @@ boolean Reflex::start(ReflexKind reflexKind)
     reflex = new RoboScript();
     reflex->initialize(3);
     
-    RoboAction* act;
+    RoboAction act;
   
-    act = new RoboAction();
     fillAction(act, 'G', -192, 100);
-    reflex->addAction(*act);
+    reflex->addAction(act);
   
-    act = new RoboAction();
     fillAction(act, 'G', 255, 20);
-    reflex->addAction(*act);
+    reflex->addAction(act);
   
-    act = new RoboAction();
     fillAction(act, 'G', 0, 0);
-    reflex->addAction(*act);
+    reflex->addAction(act);
     
     reflex->startExecution();
     return true;
@@ -132,12 +125,12 @@ boolean Reflex::start(ReflexKind reflexKind)
     RoboAction actionLeftStop;
     RoboAction actionRightStop;
     
-    fillAction2(actionLeftKick, 'L', kickSpeed, kickDuration);
-    fillAction2(actionRightKick, 'R', kickSpeed, kickDuration);
-    fillAction2(actionLeftBackKick, 'L', -kickSpeed, kickDuration);
-    fillAction2(actionRightBackKick, 'R', -kickSpeed, kickDuration);
-    fillAction2(actionLeftStop, 'L', 0, freezeDuration);
-    fillAction2(actionRightStop, 'R', 0, freezeDuration);
+    fillAction(actionLeftKick, 'L', kickSpeed, kickDuration);
+    fillAction(actionRightKick, 'R', kickSpeed, kickDuration);
+    fillAction(actionLeftBackKick, 'L', -kickSpeed, kickDuration);
+    fillAction(actionRightBackKick, 'R', -kickSpeed, kickDuration);
+    fillAction(actionLeftStop, 'L', 0, freezeDuration);
+    fillAction(actionRightStop, 'R', 0, freezeDuration);
 
     reflex = new RoboScript();
     reflex->initialize(24);
@@ -181,14 +174,7 @@ boolean Reflex::start(ReflexKind reflexKind)
   return false;
 }
 
-void Reflex::fillAction(RoboAction* roboAction, uint32_t command, uint32_t value, uint16_t delay)
-{
-  roboAction->Command = command;
-  roboAction->Value = value;
-  roboAction->Delay = delay;
-}
-
-void Reflex::fillAction2(RoboAction &roboAction, uint32_t command, uint32_t value, uint16_t delay)
+void Reflex::fillAction(RoboAction &roboAction, uint32_t command, uint32_t value, uint16_t delay)
 {
   roboAction.Command = command;
   roboAction.Value = value;
