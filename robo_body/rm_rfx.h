@@ -22,6 +22,12 @@ namespace robot_mitya
       static boolean start(ReflexKind reflexKind);
     private:
       static void fillAction(RoboAction &roboAction, uint32_t command, uint32_t value, uint16_t delay);
+      static void startHappyReflex();
+      static void startPlayReflex();
+      static void startSadReflex();
+      static void startAngryReflex();
+      static void startDanceReflex();
+      static void startNoseReflex();
   };
 }
 

@@ -6,6 +6,7 @@ extern "C" {
 
 RoboScript::RoboScript()
 {
+	this->finalize();
 }
 
 signed short RoboScript::initialize(int actionsCount)
