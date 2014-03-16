@@ -14,6 +14,12 @@
 
 namespace robot_mitya
 {
+  enum HeadPlane
+  {
+    HORIZONTAL = 0,
+    VERTICAL = 1
+  };
+
   class Equipment
   {
     public:
@@ -22,12 +28,18 @@ namespace robot_mitya
       
       static void executeInstruction(int value);
       
-      static void moveHead(String plane, int degree);
-      static void rotateHead(String plane, signed int period);
-      static void swingHead(String plane, int mode);
+      static void moveHead(HeadPlane plane, int degree);
+      static void rotateHead(HeadPlane plane, signed int period);
+      static void swingHead(HeadPlane plane, int mode);
+      static void swingHeadEx(HeadPlane plane, int mode, signed long period, double iterations,
+          signed long amplitude, double amplitudeCoefficient, bool positiveDirection);
+      static int getHeadPosition(HeadPlane plane);
 
       static void moveTail(int degree);
       static void swingTail(int mode);
+      static void swingTailEx(int mode, signed long period, double iterations,
+          signed long amplitude, double amplitudeCoefficient, bool positiveDirection);
+      static int getTailPosition();
 
       static void moveMotor(String side, int speed);
       

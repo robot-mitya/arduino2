@@ -24,20 +24,29 @@ void Action::execute(String command, int value)
   
   if (isMoveHeadCommand(command))
   {
-    Equipment::moveHead(command, value);
+    if (command == "H")
+      Equipment::moveHead(HORIZONTAL, value);
+    else
+      Equipment::moveHead(VERTICAL, value);
     processedCommand = true;
   }
 
   if (isRotateHeadCommand(command))
   {
     signed int periodInSeconds = value * 10;
-    Equipment::rotateHead(command, periodInSeconds);
+    if (command == "h")
+      Equipment::rotateHead(HORIZONTAL, periodInSeconds);
+    else
+      Equipment::rotateHead(VERTICAL, periodInSeconds);
     processedCommand = true;
   }
 
   if (isSwingHeadCommand(command))
   {
-    Equipment::swingHead(command, value);
+    if (command == "n")
+      Equipment::swingHead(HORIZONTAL, value);
+    else
+      Equipment::swingHead(VERTICAL, value);
     processedCommand = true;
   }
 

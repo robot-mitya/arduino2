@@ -43,7 +43,7 @@ void Equipment::initialize()
     Cfg::SERVO_HEAD_HORIZONTAL_PIN,
     Cfg::SERVO_HEAD_HORIZONTAL_MIN_DEGREE,
     Cfg::SERVO_HEAD_HORIZONTAL_MAX_DEGREE);
-  moveHead("H", Cfg::SERVO_HEAD_HORIZONTAL_DEFAULT_STATE);
+  moveHead(HORIZONTAL, Cfg::SERVO_HEAD_HORIZONTAL_DEFAULT_STATE);
 
   // Initializing and setting vertical servo into install-phone position:
   pinMode(Cfg::SERVO_HEAD_VERTICAL_PIN, OUTPUT);
@@ -51,7 +51,7 @@ void Equipment::initialize()
     Cfg::SERVO_HEAD_VERTICAL_PIN,
     Cfg::SERVO_HEAD_VERTICAL_MIN_DEGREE,
     Cfg::SERVO_HEAD_VERTICAL_MAX_DEGREE);
-  moveHead("V", Cfg::SERVO_HEAD_VERTICAL_DEFAULT_STATE);
+  moveHead(VERTICAL, Cfg::SERVO_HEAD_VERTICAL_DEFAULT_STATE);
 
   // Setting up the tail:
   pinMode(Cfg::SERVO_TAIL_PIN, OUTPUT);
@@ -143,37 +143,37 @@ void Equipment::executeInstruction(int value)
   }
 }
 
-void Equipment::moveHead(String plane, int degree)
+void Equipment::moveHead(HeadPlane plane, int degree)
 {
   servoHeadHorizontal->stop();
   servoHeadVertical->stop();
-  if (plane == "H") // (horizontal plane)
+  if (plane == HORIZONTAL)
   {
     servoHeadHorizontal->write(degree);
   }
-  else if (plane == "V") // (vertical plane)
+  else if (plane == VERTICAL)
   {
     servoHeadVertical->write(degree);
   }
 }
 
-void Equipment::rotateHead(String plane, signed int period)
+void Equipment::rotateHead(HeadPlane plane, signed int period)
 {
-  if (plane == "h") // (horizontal plane)
+  if (plane == HORIZONTAL)
   {
     servoHeadHorizontal->stop();
     servoHeadHorizontal->startTurn(period, true);
   }
-  else if (plane == "v") // (vertical plane)
+  else if (plane == VERTICAL)
   {
     servoHeadVertical->stop();
     servoHeadVertical->startTurn(period, true);
   }
 }
 
-void Equipment::swingHead(String plane, int mode)
+void Equipment::swingHead(HeadPlane plane, int mode)
 {
-  if (plane == "n") // (horizontal plane)
+  if (plane == HORIZONTAL)
   {
     servoHeadHorizontal->stop();
     if ((mode == 1) || (mode == 2))
@@ -181,7 +181,7 @@ void Equipment::swingHead(String plane, int mode)
       servoHeadHorizontal->startSwing(mode, 400, 2.5, 60, 0.75, true);
     }
   }
-  else if (plane == "y") // (vertical plane)
+  else if (plane == VERTICAL)
   {
     servoHeadVertical->stop();
     if ((mode == 1) || (mode == 2))
@@ -189,6 +189,31 @@ void Equipment::swingHead(String plane, int mode)
       servoHeadVertical->startSwing(mode, 400, 2.5, 30, 0.8, true);
     }
   }
+}
+
+void Equipment::swingHeadEx(HeadPlane plane, int mode, signed long period, double iterations,
+    signed long amplitude, double amplitudeCoefficient, bool positiveDirection)
+{
+  SmartServo* servo;
+  if (plane == HORIZONTAL)
+  {
+    servo = servoHeadHorizontal;
+  }
+  else if (plane == VERTICAL)
+  {
+    servo = servoHeadVertical;
+  }
+  
+  servo->stop();
+  servo->startSwing(mode, period, iterations, amplitude, amplitudeCoefficient, positiveDirection);
+}
+    
+int Equipment::getHeadPosition(HeadPlane plane)
+{
+  if (plane == HORIZONTAL)
+    return servoHeadHorizontal->read();
+  else
+    return servoHeadVertical->read();
 }
 
 void Equipment::moveTail(int degree)
@@ -204,6 +229,18 @@ void Equipment::swingTail(int mode)
   {
     servoTail->startSwing(mode, 250, 6, 70, 0.9, true);
   }
+}
+
+void Equipment::swingTailEx(int mode, signed long period, double iterations,
+    signed long amplitude, double amplitudeCoefficient, bool positiveDirection)
+{
+  servoTail->stop();
+  servoTail->startSwing(mode, period, iterations, amplitude, amplitudeCoefficient, positiveDirection);
+}
+    
+int Equipment::getTailPosition()
+{
+  return servoTail->read();
 }
 
 void Equipment::moveMotor(String side, int speed)
