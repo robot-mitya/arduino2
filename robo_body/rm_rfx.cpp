@@ -19,6 +19,7 @@ void Reflex::refresh()
   
   if (!reflex->getIsExecuting())
   {
+//    delete reflex;
     reflex = NULL;
     return;
   }
@@ -168,6 +169,19 @@ boolean Reflex::start(ReflexKind reflexKind)
   }
   else if (reflexKind == NOSE)
   {
+    Equipment::swingHeadEx(HORIZONTAL, 2, 250, 2.5, 40, 0.8, true);
+
+    reflex = new RoboScript();
+    reflex->initialize(3);
+    RoboAction act;
+    fillAction(act, 'G', -192, 100);
+    reflex->addAction(act);
+    fillAction(act, 'G', 255, 20);
+    reflex->addAction(act);
+    fillAction(act, 'G', 0, 0);
+    reflex->addAction(act);
+    reflex->startExecution();
+
     return true;
   }
   
