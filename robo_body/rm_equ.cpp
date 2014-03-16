@@ -75,9 +75,6 @@ void Equipment::initialize()
     RomeoButtons::setHandler(Equipment::buttonsHandler);
   }
 
-  // Initializing reflexes:
-  Reflex::initialize();
-  
   // Initializing robot's state:
   State::initialize();
 }

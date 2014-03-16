@@ -18,16 +18,9 @@ namespace robot_mitya
   class Reflex
   {
     public:
-      static void initialize();
       static void refresh();
       static boolean start(ReflexKind reflexKind);
     private:
-      static void initializeHappyReflex();
-      static void initializePlayReflex();
-      static void initializeSadReflex();
-      static void initializeAngryReflex();
-      static void initializeDanceReflex();
-      static void initializeNoseReflex();
       static void fillAction(RoboAction* roboAction, uint32_t command, uint32_t value, uint16_t delay);
   };
 }
