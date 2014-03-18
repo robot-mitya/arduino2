@@ -133,7 +133,7 @@ boolean Action::isStartReflexCommand(String command)
 
 void Action::voltageTimerHandler(int voltageDivider, unsigned int voltage)
 {
-  Message::send("~", voltage);
+  Message::send("~", (voltageDivider << 12) | voltage);
 }
 
 
