@@ -48,6 +48,7 @@ namespace robot_mitya
       static void setVoltageTimer(int dividerIndex, unsigned long timerDelay, void (*handler)(int, unsigned int));
     private:
       static void buttonsHandler(ButtonState buttonState, Button button);
+      static void chargerHandler(int voltageDivider, unsigned int voltage);
   };
 }
 

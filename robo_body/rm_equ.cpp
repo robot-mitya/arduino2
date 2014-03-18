@@ -25,6 +25,12 @@ static VoltageDivider* voltageDividerBattery = new VoltageDivider(Cfg::VOLTAGE_B
 static VoltageDivider* voltageDividerCharger = new VoltageDivider(Cfg::VOLTAGE_CHARGER_DIVIDER_INDEX,
   Cfg::VOLTAGE_CHARGER_PIN, Cfg::AREF_VOLTAGE, Cfg::VOLTAGE_CHARGER_R1, Cfg::VOLTAGE_CHARGER_R2);
 
+// Voltage divider to identify charging process. Plugging in an external power source should start charging.
+// When power source is plugged off the charging must be interrupted.
+static VoltageDivider* chargerListener = new VoltageDivider(Cfg::VOLTAGE_CHARGER_DIVIDER_INDEX,
+  Cfg::VOLTAGE_CHARGER_PIN, Cfg::AREF_VOLTAGE, Cfg::VOLTAGE_CHARGER_R1, Cfg::VOLTAGE_CHARGER_R2);
+static bool connectedToCharger = false;
+
 void Equipment::initialize()
 {
   // Initializing headlights:
@@ -77,12 +83,16 @@ void Equipment::initialize()
 
   // Initializing robot's state:
   State::initialize();
+  
+  connectedToCharger = false;
+  chargerListener->setTimer(Cfg::CHARGER_LISTENER_DELAY, chargerHandler);
 }
 
 void Equipment::refresh()
 {
   voltageDividerBattery->refresh();
   voltageDividerCharger->refresh();
+  chargerListener->refresh();
   
   Reflex::refresh();
   
@@ -353,6 +363,26 @@ void Equipment::buttonsHandler(ButtonState buttonState, Button button)
         case S4: if (buttonState == PRESSED) Action::execute("t", 1); break;
       }
       break;
+    }
+  }
+}
+
+void Equipment::chargerHandler(int voltageDivider, unsigned int voltage)
+{
+  if (voltage > Cfg::CHARGER_MIN_VOLTAGE)
+  {
+    if (!connectedToCharger)
+    {
+      executeInstruction(Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_ON);
+      connectedToCharger = true;
+    }
+  }
+  else
+  {
+    if (connectedToCharger)
+    {
+      executeInstruction(Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_OFF);
+      connectedToCharger = false;
     }
   }
 }

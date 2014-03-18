@@ -81,6 +81,9 @@ namespace robot_mitya
       static const float VOLTAGE_CHARGER_R1 = 7.5;
       static const float VOLTAGE_CHARGER_R2 = 4.7;
       
+      static const float CHARGER_LISTENER_DELAY = 3000;
+      static const float CHARGER_MIN_VOLTAGE = 1000; //  x 0.01 Volts (like in "=XXXX" and "~XXXX" messages)
+      
       // Instruction values.
       static const int INSTRUCTION_HEADLIGHTS_OFF = 0x0000;
       static const int INSTRUCTION_HEADLIGHTS_ON = 0x0001;
