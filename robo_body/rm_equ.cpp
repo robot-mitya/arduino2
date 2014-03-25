@@ -132,26 +132,32 @@ void Equipment::executeInstruction(int value)
     case Cfg::INSTRUCTION_HEADLIGHTS_OFF:
       digitalWrite(Cfg::LIGHT_PIN, LOW);
       Cfg::stateHeadlights = value;
+      Message::send("I", value);
       break;
     case Cfg::INSTRUCTION_HEADLIGHTS_ON:
       digitalWrite(Cfg::LIGHT_PIN, HIGH);
       Cfg::stateHeadlights = value;
+      Message::send("I", value);
       break;
     case Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_OFF:
       digitalWrite(Cfg::MAIN_ACCUMULATOR_CHARGER_PIN, LOW);
       Cfg::stateMainAccumulatorCharge = value;
+      Message::send("I", value);
       break;
     case Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_ON:
       digitalWrite(Cfg::MAIN_ACCUMULATOR_CHARGER_PIN, HIGH);
       Cfg::stateMainAccumulatorCharge = value;
+      Message::send("I", value);
       break;
     case Cfg::INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_OFF:
       digitalWrite(Cfg::PHONE_ACCUMULATOR_CHARGER_PIN, LOW);
       Cfg::statePhoneAccumulatorCharge = value;
+      Message::send("I", value);
       break;
     case Cfg::INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_ON:
       digitalWrite(Cfg::PHONE_ACCUMULATOR_CHARGER_PIN, HIGH);
       Cfg::statePhoneAccumulatorCharge = value;
+      Message::send("I", value);
       break;
   }
 }
