@@ -91,6 +91,12 @@ namespace robot_mitya
       static const int INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_ON = 0x0031;
       static const int INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_OFF = 0x0040;
       static const int INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_ON = 0x0041;
+      static const int INSTRUCTION_STATE_REQUEST = 0xFFFF;
+      
+      // Current state.
+      static int stateHeadlights;
+      static int stateMainAccumulatorCharge;
+      static int statePhoneAccumulatorCharge;
   };
 }
 
