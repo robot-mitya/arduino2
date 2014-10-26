@@ -36,48 +36,40 @@ static bool connectedToCharger = false;
 
 void Equipment::initialize()
 {
-  const int MAGIC_DELAY = 30; //todo: it doesn't help in #5 issue
-  
   // Initializing headlights:
   pinMode(Cfg::LIGHT_PIN, OUTPUT);
-  delay(MAGIC_DELAY);
   executeInstruction(Cfg::INSTRUCTION_HEADLIGHTS_OFF);
 
   // Initializing accumulators' charging:
   pinMode(Cfg::MAIN_ACCUMULATOR_CHARGER_PIN, OUTPUT);
-  delay(MAGIC_DELAY);
   executeInstruction(Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_OFF);
   pinMode(Cfg::PHONE_ACCUMULATOR_CHARGER_PIN, OUTPUT);
-  delay(MAGIC_DELAY);
   executeInstruction(Cfg::INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_OFF);
 
   // Initializing and setting horizontal servo into install-phone position:
-//  pinMode(Cfg::SERVO_HEAD_HORIZONTAL_PIN, OUTPUT);
   servoHeadHorizontal->attach(
     Cfg::SERVO_HEAD_HORIZONTAL_PIN,
     Cfg::SERVO_HEAD_HORIZONTAL_MIN_DEGREE,
     Cfg::SERVO_HEAD_HORIZONTAL_MAX_DEGREE);
-  delay(MAGIC_DELAY);
+servoHeadHorizontal->stop(); //todo: fix the library (#5)
   moveHead(HORIZONTAL, Cfg::SERVO_HEAD_HORIZONTAL_DEFAULT_STATE);
   isHeadHorizontalServoBusy = false;
 
   // Initializing and setting vertical servo into install-phone position:
-//  pinMode(Cfg::SERVO_HEAD_VERTICAL_PIN, OUTPUT);
   servoHeadVertical->attach(
     Cfg::SERVO_HEAD_VERTICAL_PIN,
     Cfg::SERVO_HEAD_VERTICAL_MIN_DEGREE,
     Cfg::SERVO_HEAD_VERTICAL_MAX_DEGREE);
-  delay(MAGIC_DELAY);
+servoHeadVertical->stop(); //todo: fix the library (#5)
   moveHead(VERTICAL, Cfg::SERVO_HEAD_VERTICAL_DEFAULT_STATE);
   isHeadVerticalServoBusy = false;
 
   // Setting up the tail:
-//  pinMode(Cfg::SERVO_TAIL_PIN, OUTPUT);
   servoTail->attach(
     Cfg::SERVO_TAIL_PIN,
     Cfg::SERVO_TAIL_MIN_DEGREE,
     Cfg::SERVO_TAIL_MAX_DEGREE);
-  delay(MAGIC_DELAY);
+servoTail->stop(); //todo: fix the library (#5)
   moveTail(Cfg::SERVO_TAIL_DEFAULT_STATE);
 
   // Motors initializing:
@@ -85,7 +77,6 @@ void Equipment::initialize()
   pinMode(Cfg::MOTOR_LEFT_DIRECTION_PIN, OUTPUT);
   pinMode(Cfg::MOTOR_RIGHT_SPEED_PIN, OUTPUT);
   pinMode(Cfg::MOTOR_RIGHT_DIRECTION_PIN, OUTPUT);
-  delay(MAGIC_DELAY);
   moveMotor("G", 0);
 
   // Initializing buttons:
