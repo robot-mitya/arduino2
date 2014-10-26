@@ -20,6 +20,9 @@ static SmartServo* servoHeadHorizontal = new SmartServo();
 static SmartServo* servoHeadVertical = new SmartServo();
 static SmartServo* servoTail = new SmartServo();
 
+static bool isHeadHorizontalServoBusy;
+static bool isHeadVerticalServoBusy;
+
 static VoltageDivider* voltageDividerBattery = new VoltageDivider(Cfg::VOLTAGE_BATTERY_DIVIDER_INDEX,
   Cfg::VOLTAGE_BATTERY_PIN, Cfg::AREF_VOLTAGE, Cfg::VOLTAGE_BATTERY_R1, Cfg::VOLTAGE_BATTERY_R2);
 static VoltageDivider* voltageDividerCharger = new VoltageDivider(Cfg::VOLTAGE_CHARGER_DIVIDER_INDEX,
@@ -33,38 +36,48 @@ static bool connectedToCharger = false;
 
 void Equipment::initialize()
 {
+  const int MAGIC_DELAY = 30; //todo: it doesn't help in #5 issue
+  
   // Initializing headlights:
   pinMode(Cfg::LIGHT_PIN, OUTPUT);
+  delay(MAGIC_DELAY);
   executeInstruction(Cfg::INSTRUCTION_HEADLIGHTS_OFF);
 
   // Initializing accumulators' charging:
   pinMode(Cfg::MAIN_ACCUMULATOR_CHARGER_PIN, OUTPUT);
+  delay(MAGIC_DELAY);
   executeInstruction(Cfg::INSTRUCTION_MAIN_ACCUMULATOR_CHARGE_OFF);
   pinMode(Cfg::PHONE_ACCUMULATOR_CHARGER_PIN, OUTPUT);
+  delay(MAGIC_DELAY);
   executeInstruction(Cfg::INSTRUCTION_PHONE_ACCUMULATOR_CHARGE_OFF);
 
   // Initializing and setting horizontal servo into install-phone position:
-  pinMode(Cfg::SERVO_HEAD_HORIZONTAL_PIN, OUTPUT);
+//  pinMode(Cfg::SERVO_HEAD_HORIZONTAL_PIN, OUTPUT);
   servoHeadHorizontal->attach(
     Cfg::SERVO_HEAD_HORIZONTAL_PIN,
     Cfg::SERVO_HEAD_HORIZONTAL_MIN_DEGREE,
     Cfg::SERVO_HEAD_HORIZONTAL_MAX_DEGREE);
+  delay(MAGIC_DELAY);
   moveHead(HORIZONTAL, Cfg::SERVO_HEAD_HORIZONTAL_DEFAULT_STATE);
+  isHeadHorizontalServoBusy = false;
 
   // Initializing and setting vertical servo into install-phone position:
-  pinMode(Cfg::SERVO_HEAD_VERTICAL_PIN, OUTPUT);
+//  pinMode(Cfg::SERVO_HEAD_VERTICAL_PIN, OUTPUT);
   servoHeadVertical->attach(
     Cfg::SERVO_HEAD_VERTICAL_PIN,
     Cfg::SERVO_HEAD_VERTICAL_MIN_DEGREE,
     Cfg::SERVO_HEAD_VERTICAL_MAX_DEGREE);
+  delay(MAGIC_DELAY);
   moveHead(VERTICAL, Cfg::SERVO_HEAD_VERTICAL_DEFAULT_STATE);
+  isHeadVerticalServoBusy = false;
 
   // Setting up the tail:
-  pinMode(Cfg::SERVO_TAIL_PIN, OUTPUT);
+//  pinMode(Cfg::SERVO_TAIL_PIN, OUTPUT);
   servoTail->attach(
     Cfg::SERVO_TAIL_PIN,
     Cfg::SERVO_TAIL_MIN_DEGREE,
     Cfg::SERVO_TAIL_MAX_DEGREE);
+  delay(MAGIC_DELAY);
   moveTail(Cfg::SERVO_TAIL_DEFAULT_STATE);
 
   // Motors initializing:
@@ -72,6 +85,7 @@ void Equipment::initialize()
   pinMode(Cfg::MOTOR_LEFT_DIRECTION_PIN, OUTPUT);
   pinMode(Cfg::MOTOR_RIGHT_SPEED_PIN, OUTPUT);
   pinMode(Cfg::MOTOR_RIGHT_DIRECTION_PIN, OUTPUT);
+  delay(MAGIC_DELAY);
   moveMotor("G", 0);
 
   // Initializing buttons:
@@ -97,13 +111,16 @@ void Equipment::refresh()
   Reflex::refresh();
   
   // Swinging head in horizontal plane.
-  if (servoHeadHorizontal->update())
+  isHeadHorizontalServoBusy = servoHeadHorizontal->update();
+  if (isHeadHorizontalServoBusy)
   {
+    //Message::sendResult(10);
     // We know the angle here, we can transmit...
   }
 
   // Swinging head in vertical plane.
-  if (servoHeadVertical->update())
+  isHeadVerticalServoBusy = servoHeadVertical->update();
+  if (isHeadVerticalServoBusy)
   {
     // We know the angle here, we can transmit...
   }
@@ -164,8 +181,6 @@ void Equipment::executeInstruction(int value)
 
 void Equipment::moveHead(HeadPlane plane, int degree)
 {
-  servoHeadHorizontal->stop();
-  servoHeadVertical->stop();
   if (plane == HORIZONTAL)
   {
     servoHeadHorizontal->write(degree);
@@ -181,11 +196,13 @@ void Equipment::rotateHead(HeadPlane plane, signed int period)
   if (plane == HORIZONTAL)
   {
     servoHeadHorizontal->stop();
+    isHeadHorizontalServoBusy = true;
     servoHeadHorizontal->startTurn(period, true);
   }
   else if (plane == VERTICAL)
   {
     servoHeadVertical->stop();
+    isHeadVerticalServoBusy = true;
     servoHeadVertical->startTurn(period, true);
   }
 }
@@ -197,6 +214,7 @@ void Equipment::swingHead(HeadPlane plane, int mode)
     servoHeadHorizontal->stop();
     if ((mode == 1) || (mode == 2))
     {
+      isHeadHorizontalServoBusy = true;
       servoHeadHorizontal->startSwing(mode, 400, 2.5, 60, 0.75, true);
     }
   }
@@ -205,6 +223,7 @@ void Equipment::swingHead(HeadPlane plane, int mode)
     servoHeadVertical->stop();
     if ((mode == 1) || (mode == 2))
     {
+      isHeadVerticalServoBusy = true;
       servoHeadVertical->startSwing(mode, 400, 2.5, 30, 0.8, true);
     }
   }
@@ -224,6 +243,16 @@ void Equipment::swingHeadEx(HeadPlane plane, int mode, signed long period, doubl
   }
   
   servo->stop();
+
+  if (plane == HORIZONTAL)
+  {
+    isHeadHorizontalServoBusy = true;
+  }
+  else if (plane == VERTICAL)
+  {
+    isHeadVerticalServoBusy = true;
+  }
+
   servo->startSwing(mode, period, iterations, amplitude, amplitudeCoefficient, positiveDirection);
 }
     
@@ -233,6 +262,14 @@ int Equipment::getHeadPosition(HeadPlane plane)
     return servoHeadHorizontal->read();
   else
     return servoHeadVertical->read();
+}
+
+bool Equipment::isHeadServoBusy(HeadPlane plane)
+{
+  if (plane == HORIZONTAL)
+    return isHeadHorizontalServoBusy;
+  else
+    return isHeadVerticalServoBusy;
 }
 
 void Equipment::moveTail(int degree)

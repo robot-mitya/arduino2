@@ -24,11 +24,16 @@ void Action::execute(String command, int value)
   
   if (isMoveHeadCommand(command))
   {
-    if (command == "H")
+    if ((command == "H") && (!Equipment::isHeadServoBusy(HORIZONTAL)))
+    {
       Equipment::moveHead(HORIZONTAL, value);
-    else
+      processedCommand = true;
+    }
+    else if ((command == "V") && (!Equipment::isHeadServoBusy(VERTICAL)))
+    {
       Equipment::moveHead(VERTICAL, value);
-    processedCommand = true;
+      processedCommand = true;
+    }
   }
 
   if (isRotateHeadCommand(command))

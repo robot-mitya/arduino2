@@ -34,6 +34,7 @@ namespace robot_mitya
       static void swingHeadEx(HeadPlane plane, int mode, signed long period, double iterations,
           signed long amplitude, double amplitudeCoefficient, bool positiveDirection);
       static int getHeadPosition(HeadPlane plane);
+      static bool isHeadServoBusy(HeadPlane plane);
 
       static void moveTail(int degree);
       static void swingTail(int mode);

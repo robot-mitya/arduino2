@@ -65,7 +65,7 @@ namespace robot_mitya
       
       // Default values for servos.
       static const int SERVO_HEAD_HORIZONTAL_DEFAULT_STATE = 90;
-      static const int SERVO_HEAD_VERTICAL_DEFAULT_STATE = 90;
+      static const int SERVO_HEAD_VERTICAL_DEFAULT_STATE = 45;
       static const int SERVO_TAIL_DEFAULT_STATE = 90;
       
       // Voltage dividers.
