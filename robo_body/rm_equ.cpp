@@ -51,7 +51,6 @@ void Equipment::initialize()
     Cfg::SERVO_HEAD_HORIZONTAL_PIN,
     Cfg::SERVO_HEAD_HORIZONTAL_MIN_DEGREE,
     Cfg::SERVO_HEAD_HORIZONTAL_MAX_DEGREE);
-servoHeadHorizontal->stop(); //todo: fix the library (#5)
   moveHead(HORIZONTAL, Cfg::SERVO_HEAD_HORIZONTAL_DEFAULT_STATE);
   isHeadHorizontalServoBusy = false;
 
@@ -60,7 +59,6 @@ servoHeadHorizontal->stop(); //todo: fix the library (#5)
     Cfg::SERVO_HEAD_VERTICAL_PIN,
     Cfg::SERVO_HEAD_VERTICAL_MIN_DEGREE,
     Cfg::SERVO_HEAD_VERTICAL_MAX_DEGREE);
-servoHeadVertical->stop(); //todo: fix the library (#5)
   moveHead(VERTICAL, Cfg::SERVO_HEAD_VERTICAL_DEFAULT_STATE);
   isHeadVerticalServoBusy = false;
 
@@ -69,7 +67,6 @@ servoHeadVertical->stop(); //todo: fix the library (#5)
     Cfg::SERVO_TAIL_PIN,
     Cfg::SERVO_TAIL_MIN_DEGREE,
     Cfg::SERVO_TAIL_MAX_DEGREE);
-servoTail->stop(); //todo: fix the library (#5)
   moveTail(Cfg::SERVO_TAIL_DEFAULT_STATE);
 
   // Motors initializing:

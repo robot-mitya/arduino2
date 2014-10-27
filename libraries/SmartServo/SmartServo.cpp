@@ -5,17 +5,23 @@
 
 SmartServo::SmartServo()
 {
+  this->isSwinging = false;
+  this->isTurning = false;
   this->minDegree = 0;
   this->maxDegree = 180;
 }
 
 uint8_t SmartServo::attach(int pin)
 {
+  this->isSwinging = false;
+  this->isTurning = false;
   this->servo.attach(pin);
 }
 
 uint8_t SmartServo::attach(int pin, int minDegree, int maxDegree)
 {
+  this->isSwinging = false;
+  this->isTurning = false;
   this->minDegree = minDegree < maxDegree ? minDegree : maxDegree;
   this->maxDegree = minDegree > maxDegree ? minDegree : maxDegree;
   this->servo.attach(pin);
