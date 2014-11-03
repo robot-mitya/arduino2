@@ -29,7 +29,7 @@ namespace robot_mitya
       static void executeInstruction(int value);
       
       static void moveHead(HeadPlane plane, int degree);
-      static void rotateHead(HeadPlane plane, signed int period);
+      static void rotateHead(HeadPlane plane, signed long period);
       static void swingHead(HeadPlane plane, int mode);
       static void swingHeadEx(HeadPlane plane, int mode, signed long period, double iterations,
           signed long amplitude, double amplitudeCoefficient, bool positiveDirection);

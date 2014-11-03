@@ -179,7 +179,7 @@ void Equipment::moveHead(HeadPlane plane, int degree)
   }
 }
 
-void Equipment::rotateHead(HeadPlane plane, signed int period)
+void Equipment::rotateHead(HeadPlane plane, signed long period)
 {
   if (plane == HORIZONTAL)
   {

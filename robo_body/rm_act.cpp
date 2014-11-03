@@ -38,7 +38,7 @@ void Action::execute(String command, int value)
 
   if (isRotateHeadCommand(command))
   {
-    signed int periodInSeconds = value * 10;
+    signed long periodInSeconds = ((signed long) value) * 10;
     if (command == "h")
       Equipment::rotateHead(HORIZONTAL, periodInSeconds);
     else
